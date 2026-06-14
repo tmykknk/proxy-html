@@ -3,7 +3,7 @@ name: Lint and Deploy
 on:
   push:
     branches:
-      - main
+      - feature/gha-test
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -47,10 +47,6 @@ jobs:
           username: ${{ secrets.USER }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: public_html/proxy/
-          local-dir: ./
+          local-dir: ./dist/
           exclude: |
-            **
-            !index.html
-            !index.php
-            !style.css
-            !main.js
+            *.json

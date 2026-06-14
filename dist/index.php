@@ -1,6 +1,6 @@
 <?php
-$envPath = file_exists(__DIR__ . '/.env')
-    ? __DIR__ . '/.env'
+$envPath = file_exists(__DIR__ . '/../.env')
+    ? __DIR__ . '/../.env'
     : __DIR__ . '/../../.env';
 if (file_exists($envPath)) {
     $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
@@ -103,7 +103,7 @@ $template = '
             <span class="text-body-secondary text-uppercase small fw-semibold d-block mb-1" style="letter-spacing: 0.15em;">' . $pageSubtitle . '</span>
             <h1 class="brand-title fw-bold fs-2 mb-0">' . $pageTitle . '</h1>
         </div>
-        <a href="?refresh=1" class="btn btn-outline-dark rounded-pill btn-sm px-3 py-2 btn-modern-reload d-inline-flex align-items-center gap-2">
+        <a href="index.html?refresh=1" class="btn btn-outline-dark rounded-pill btn-sm px-3 py-2 btn-modern-reload d-inline-flex align-items-center gap-2">
             <i class="bi bi-arrow-clockwise fs-6"></i>
             <span class="fw-medium">再読込</span>
         </a>
