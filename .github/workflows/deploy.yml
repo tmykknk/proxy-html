@@ -3,7 +3,7 @@ name: Lint and Deploy
 on:
   push:
     branches:
-      - main
+      - feature/gha-test
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -38,19 +38,18 @@ jobs:
       - name: Inject Cache Busting Version
         run: |
           VERSION=$(date +%Y%m%d%H%M%S)
-          sed -i "s/VERSION_PLACEHOLDER/${VERSION}/g" index.html
+          sed -i "s/VERSION_PLACEHOLDER/${VERSION}/g" dist/index.html
 
-      - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: public_html/proxy/
-          local-dir: ./
-          exclude: |
-            **
-            !index.html
-            !index.php
-            !style.css
-            !main.js
+      - name: FTP Deploy via cURL
+        run: |
+          SERVER_URL="ftp://${{ secrets.HOST }}/public_html/proxy/"
+          USER_PASS="${{ secrets.USER }}:${{ secrets.FTP_PASSWORD }}"
+
+          for file in dist/*; do
+            if [ -f "$file" ]; then
+              if [[ "$file" == *.json ]]; then
+                continue
+              fi
+              curl -T "$file" "${SERVER_URL}" --user "${USER_PASS}"
+            fi
+          done

@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   php-lint:
     image: php:8.2-cli-alpine
