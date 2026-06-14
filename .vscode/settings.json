@@ -1,0 +1,16 @@
+{
+  "editor.formatOnSave": true,
+  
+  // PHPはすでにインストール済みのIntelephenseにすべて任せる（PCにPHPがなくても動く）
+  "[php]": {
+    "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+  },
+  
+  // 標準のPHP構文エラーチェックを無効化（Intelephenseが代わりに行うため）
+  "php.validate.enable": false,
+  
+  // HTML/CSS/JS は Prettier に任せる
+  "[html]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[css]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" }
+}

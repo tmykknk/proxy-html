@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  php-lint:
+    image: php:8.2-cli-alpine
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    ports:
+      - "8080:8080"
+    tty: true
+    command: php -S 0.0.0.0:8080 -t /workspace

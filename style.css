@@ -1,0 +1,66 @@
+body {
+  font-family: "Plus Jakarta Sans", "Noto Sans JP", sans-serif;
+  background-color: #fafafa;
+}
+
+/* タイトルのグラデーション */
+.brand-title {
+  background: linear-gradient(135deg, #09090b 0%, #3f3f46 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* カードの浮き上がりアニメーション */
+.hover-animate {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hover-animate:hover {
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08) !important;
+  border-color: rgba(9, 9, 11, 0.15) !important;
+}
+
+/* 画像のホバーズーム */
+.zoom-img {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hover-animate:hover .zoom-img {
+  transform: scale(1.06);
+}
+
+/* ボタンホバー時の回転・移動 */
+.btn-modern-reload i {
+  transition: transform 0.5s ease;
+}
+.btn-modern-reload:hover i {
+  transform: rotate(180deg);
+}
+.btn-product-detail i {
+  transition: transform 0.2s ease;
+}
+.btn-product-detail:hover i {
+  transform: translate(2px, -2px);
+}
+
+/* 2行制限クランプ */
+.line-clamp-2 {
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 2.8em;
+}
+
+/* Intersection Observer用フェードイン */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
