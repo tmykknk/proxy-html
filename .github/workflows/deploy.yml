@@ -1,0 +1,56 @@
+name: Lint and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  # 1. 構文チェックジョブ
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+
+      - name: Check PHP Syntax Error
+        run: |
+          if [ -f index.php ]; then
+            php -l index.php
+          fi
+
+  # 2. デプロイジョブ
+  deploy:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Inject Cache Busting Version
+        run: |
+          VERSION=$(date +%Y%m%d%H%M%S)
+          sed -i "s/VERSION_PLACEHOLDER/${VERSION}/g" index.html
+
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: public_html/proxy/
+          local-dir: ./
+          exclude: |
+            **
+            !index.html
+            !index.php
+            !style.css
+            !main.js
