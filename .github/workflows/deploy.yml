@@ -6,12 +6,12 @@ on:
       - feature/gha-test
 
 jobs:
-  # 1. 構文チェックジョブ（PCにPHPがない代わりにGHA側でテストする）
+  # 1. 構文チェックジョブ
   lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -28,28 +28,20 @@ jobs:
   deploy:
     needs: lint
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
-      - name: Install SSH Key
-        uses: shimataro/ssh-key-action@v2
+      - name: SFTP upload
+        uses: Dylan700/sftp-upload-action@latest
         with:
-          key: ${{ secrets.SSH_KEY }}
-          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
-          if_key_exists: replace
-
-      - name: Deploy via rsync
-        run: |
-          rsync -avzn --delete \
-            --exclude='.env' \
-            --exclude='cache.json' \
-            --include='*/' \
-            --include='index.html' \
-            --include='index.php' \
-            --include='style.css' \
-            --include='main.js' \
-            --exclude='*' \
-            ./ ${{ secrets.USER }}@${{ secrets.HOST }}:~/public_html/proxy/
+          server: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 22
+          # 指定ファイルのみを明示的にアップロード
+          uploads: |
+            ./index.html => ~/public_html/proxy/
+            ./index.php => ~/public_html/proxy/
+            ./style.css => ~/public_html/proxy/
+            ./main.js => ~/public_html/proxy/
