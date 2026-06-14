@@ -6,7 +6,7 @@ on:
       - feature/gha-test
 
 env:
-  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   # 1. 構文チェックジョブ
@@ -35,6 +35,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
+      - name: Inject Cache Busting Version
+        run: |
+          VERSION=$(date +%Y%m%d%H%M%S)
+          sed -i "s/VERSION_PLACEHOLDER/${VERSION}/g" index.html
+
       - name: FTP Deploy
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -43,8 +48,9 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: public_html/proxy/
           local-dir: ./
-          include: |
-            index.html
-            index.php
-            style.css
-            main.js
+          exclude: |
+            **
+            !index.html
+            !index.php
+            !style.css
+            !main.js
