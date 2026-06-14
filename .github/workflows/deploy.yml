@@ -3,7 +3,7 @@ name: Lint and Deploy
 on:
   push:
     branches:
-      - feature/gha-test
+      - main
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
