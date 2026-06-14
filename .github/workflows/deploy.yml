@@ -50,6 +50,6 @@ jobs:
               if [[ "$file" == *.json ]]; then
                 continue
               fi
-              curl --passive -T "$file" "${SERVER_URL}" --user "${USER_PASS}"
+              curl -T "$file" "${SERVER_URL}" --user "${USER_PASS}"
             fi
           done
